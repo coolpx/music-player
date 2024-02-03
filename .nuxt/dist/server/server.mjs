@@ -1,1 +1,0 @@
-export { default } from "file:///home/yargel/Documents/music-player/node_modules/@nuxt/vite-builder/dist/runtime/vite-node.mjs"

@@ -8,6 +8,6 @@
 
 <style scoped>
 .library {
-    margin-bottom: calc(40px + 16px + 16px);
+    margin-bottom: calc(80px + 16px + 16px);
 }
 </style>
