@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Inter';
+    src: url(/fonts/Inter.woff2) format('woff2');
+}
+
+body, html {
+    background-color: #111217;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+p {
+    height: fit-content;
+}
