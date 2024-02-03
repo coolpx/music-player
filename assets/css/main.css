@@ -5,10 +5,14 @@
 
 body, html {
     background-color: #111217;
-    color: #fff;
+    color: white;
     font-family: 'Inter', sans-serif;
 }
 
 p {
     height: fit-content;
+}
+
+a:visited, a:link, a:active {
+    color: inherit;
 }
