@@ -1,48 +1,21 @@
-# Nuxt Example
-
-Deploy your [Nuxt](https://nuxt.com) project to Vercel with zero configuration.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/nuxtjs&template=nuxtjs)
-
-_Live Example: https://nuxtjs-template.vercel.app_
-
-Look at the [Nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
-
-## Setup
-
-Make sure to install the dependencies:
-
+# Using
+## Hosted (Recommended)
+Visit [https://music.coolpixels.net](music.coolpixels.net) to use the hosted version of the app.
+## Local
+1. Clone the repository
 ```bash
-# yarn
-yarn
-
-# npm
+git clone https://github.com/coolpx/music-player.git
+```
+2. Install dependencies
+```bash
 npm install
-
-# pnpm
-pnpm install --shamefully-hoist
 ```
-
-## Development Server
-
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
+3. Build the app
 ```bash
 npm run build
 ```
-
-Locally preview production build:
-
+4. Start the server
 ```bash
-npm run preview
+npm start
 ```
-
-Checkout the [deployment documentation](https://nuxt.com/docs/getting-started/deployment#presets) for more information.
+5. Visit [http://localhost:3000](localhost:3000) to use the app.
