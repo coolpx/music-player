@@ -43,8 +43,8 @@ export default {
     name: 'SongRow',
     methods: {
         play() {
-            const { userData, setUserData } = useUserData();
-            setUserData({ playing: { icon: this.icon, title: this.title, artist: this.artist, album: this.album, duration: this.duration, audioUrl: this.audioUrl } })
+            const { setUserDataProperty } = useUserData();
+            setUserDataProperty('playing', { icon: this.icon, title: this.title, artist: this.artist, album: this.album, duration: this.duration, audioUrl: this.audioUrl })
         }
     }
 }
