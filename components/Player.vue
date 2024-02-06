@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-const { userData, getUserDataProperty, setUserDataProperty } = useUserData();
+const { userData } = useUserData();
 </script>
 
 <script>
@@ -43,8 +43,6 @@ async function navigateSong(offset) {
         await updateSongList();
         songList = getUserDataProperty('songList');
     }
-
-    console.log(songList, playing);
 
     if (!songList || !playing) return;
 
@@ -68,6 +66,47 @@ async function navigateSong(offset) {
     setUserDataProperty('playing', nextSong);
 }
 
+function getAudio() {
+    return document.querySelector('audio');
+}
+
+function togglePlaying() {
+    const audio = getAudio();
+    if (audio.paused) {
+        audio.play();
+    } else {
+        audio.pause();
+    }
+}
+
+function backward() {
+    navigateSong(-1);
+}
+
+function forward() {
+    navigateSong(1);
+}
+
+if (navigator && 'mediaSession' in navigator) {
+    navigator.mediaSession.setActionHandler('play', function () {
+        const audio = getAudio();
+        audio.play();
+    });
+
+    navigator.mediaSession.setActionHandler('pause', function () {
+        const audio = getAudio();
+        audio.pause();
+    });
+
+    navigator.mediaSession.setActionHandler('previoustrack', function () {
+        navigateSong(-1);
+    });
+
+    navigator.mediaSession.setActionHandler('nexttrack', function () {
+        navigateSong(1);
+    });
+}
+
 export default {
     data() {
         return {
@@ -77,7 +116,7 @@ export default {
         };
     },
     mounted() {
-        const audio = this.$refs.audio;
+        const audio = getAudio();
         this.totalDuration = audio.duration;
         audio.onended = () => {
             navigateSong(1);
@@ -86,31 +125,20 @@ export default {
     },
     methods: {
         updateTime() {
-            const audio = this.$refs.audio;
+            const audio = getAudio();
             this.currentTime = audio.currentTime;
             this.totalDuration = audio.duration;
         },
         seek() {
-            const audio = this.$refs.audio;
+            const audio = getAudio();
             audio.currentTime = this.currentTime;
             audio.play();
         },
-        togglePlaying() {
-            const audio = this.$refs.audio;
-            if (audio.paused) {
-                audio.play();
-            } else {
-                audio.pause();
-            }
-        },
-        async backward() {
-            navigateSong(-1);
-        },
-        async forward() {
-            navigateSong(1);
-        },
+        togglePlaying,
+        backward,
+        forward,
         seekVolume() {
-            const audio = document.querySelector('audio');
+            const audio = getAudio();
             const volume = document.querySelector('.volume');
             this.volume = volume.value;
             audio.volume = volume.value / 100;

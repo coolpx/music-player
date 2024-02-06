@@ -25,6 +25,14 @@ export default function () {
 
     const setUserDataProperty = function (property: keyof UserData, value: any) {
         userData.value[property] = value
+        if (property == 'playing' && navigator && 'mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: value.title,
+                artist: value.artist,
+                album: value.album,
+                artwork: [{ src: value.icon }]
+            })
+        }
     }
 
     const getUserData = function () {
