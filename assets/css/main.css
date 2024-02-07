@@ -16,3 +16,22 @@ p {
 a:visited, a:link, a:active {
     color: inherit;
 }
+
+input, button {
+    background-color: #1E2127;
+    color: inherit;
+    font-family: inherit;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    appearance: none;
+}
+
+button {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+input:focus {
+    outline: none;
+}

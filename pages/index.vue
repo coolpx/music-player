@@ -1,10 +1,15 @@
 <template>
     <div>
-        <h1>Library</h1>
+        <Header title="Library" settingsIcon />
+        <Settings v-show="userData.settingsOpen" />
         <SongLibrary class="library" />
     </div>
     <Player />
 </template>
+
+<script setup>
+const { userData } = useUserData();
+</script>
 
 <style scoped>
 .library {

@@ -11,12 +11,20 @@ type Song = {
 
 type UserData = {
     playing: Song | undefined,
-    songList: Array<Song>
+    songList: Array<Song>,
+    settingsOpen: boolean,
+    settings: {
+        rpcServerUrl: string
+    }
 }
 
 export default function () {
     const userData = useState<UserData>('user', () => {
-        return { playing: undefined, songList: [] }
+        return {
+            playing: undefined, songList: [], settingsOpen: false, settings: {
+                rpcServerUrl: 'http://localhost:13525'
+            }
+        }
     });
 
     const setUserData = function (user: UserData) {
@@ -44,7 +52,7 @@ export default function () {
     }
 
     const updateSongList = async function () {
-        const response = await fetch('http://localhost:13525/list').catch(() => undefined);
+        const response = await fetch([userData.value.settings.rpcServerUrl, 'list'].join('/')).catch(() => undefined);
 
         if (response && response.ok) {
             setUserDataProperty('songList', await response.json());
