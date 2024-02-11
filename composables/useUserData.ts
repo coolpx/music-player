@@ -11,6 +11,7 @@ type Song = {
 
 type UserData = {
     playing: Song | undefined,
+    isPlaying: boolean,
     songList: Array<Song>,
     settingsOpen: boolean,
     settings: {
@@ -21,7 +22,7 @@ type UserData = {
 export default function () {
     const userData = useState<UserData>('user', () => {
         return {
-            playing: undefined, songList: [], settingsOpen: false, settings: {
+            playing: undefined, isPlaying: false, songList: [], settingsOpen: false, settings: {
                 rpcServerUrl: 'http://localhost:13525'
             }
         }

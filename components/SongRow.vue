@@ -1,6 +1,6 @@
 <template>
     <div class="songRow" v-on:click="play">
-        <img class="songImage" :src="icon">
+        <img class="songImage" loading="lazy" :src="icon">
         <p class="songTitle">{{ title }}</p>
         <p class="songArtist">{{ artist }}</p>
         <p class="songAlbum">{{ album }}</p>
@@ -8,43 +8,40 @@
     </div>
 </template>
 
-<script setup lang="ts">
-defineProps({
-    icon: {
-        type: String,
-        default: '/images/checkerboard.png'
-    },
-    title: {
-        type: String,
-        default: 'Title'
-    },
-    artist: {
-        type: String,
-        default: 'Artist'
-    },
-    album: {
-        type: String,
-        default: 'Album'
-    },
-    duration: {
-        type: String,
-        default: '0:00'
-    },
-    audioUrl: {
-        type: String,
-        default: '/audio/silence.mp3'
-    }
-});
-
-</script>
-
-<script lang="ts">
+<script>
 export default {
     name: 'SongRow',
     methods: {
         play() {
             const { setUserDataProperty } = useUserData();
-            setUserDataProperty('playing', { icon: this.icon, title: this.title, artist: this.artist, album: this.album, duration: this.duration, audioUrl: this.audioUrl })
+            setUserDataProperty('playing', { icon: this.icon, title: this.title, artist: this.artist, album: this.album, duration: this.duration, audioUrl: this.audioUrl });
+            setUserDataProperty('isPlaying', true);
+        }
+    },
+    props: {
+        icon: {
+            type: String,
+            default: '/images/checkerboard.png'
+        },
+        title: {
+            type: String,
+            required: true
+        },
+        artist: {
+            type: String,
+            required: true
+        },
+        album: {
+            type: String,
+            required: true
+        },
+        duration: {
+            type: String,
+            required: true
+        },
+        audioUrl: {
+            type: String,
+            required: true
         }
     }
 }
@@ -72,6 +69,9 @@ export default {
 .songRow>p {
     flex: 1;
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .songRow>p:last-child {

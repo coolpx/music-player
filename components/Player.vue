@@ -1,26 +1,26 @@
 <template>
     <div v-show="userData.playing" class="player">
-        <audio :src="userData.playing?.audioUrl" ref="audio" @timeupdate="updateTime" autoplay></audio>
+        <audio :src="userData.playing?.audioUrl" loading="lazy" ref="audio" @timeupdate="updateTime" autoplay></audio>
         <div class="player-info">
             <p>{{ userData.playing?.artist }}</p>
             <p>{{ userData.playing?.album }}</p>
             <p>{{ userData.playing?.title }}</p>
         </div>
         <div class="audio-controls">
-            <div class="time-controls">
+            <div class="time-controls seekbar-container">
                 <p>Time</p>
                 <input class="seekbar" type="range" min="0" :max="totalDuration" v-model="currentTime" @input="seek">
             </div>
-            <div class="volume-controls">
+            <div class="volume-controls seekbar-container">
                 <p>Volume</p>
                 <input class="seekbar volume" type="range" min="0" max="100" v-model="volume" @input="seekVolume">
             </div>
             <div class="playback-controls-container">
                 <p>Playback</p>
                 <div class="playback-controls">
-                    <img src="/images/backward.svg" v-on:click="backward">
-                    <img src="/images/play-pause.svg" v-on:click="togglePlaying">
-                    <img src="/images/forward.svg" v-on:click="forward">
+                    <Icon icon="backward" v-on:click="backward" />
+                    <Icon v-bind:icon="(userData.isPlaying == true) ? 'pause' : 'play'" v-on:click="togglePlaying" />
+                    <Icon icon="forward" v-on:click="forward" />
                 </div>
             </div>
         </div>
@@ -71,11 +71,14 @@ function getAudio() {
 }
 
 function togglePlaying() {
+    const { setUserDataProperty } = useUserData();
     const audio = getAudio();
     if (audio.paused) {
         audio.play();
+        setUserDataProperty('isPlaying', true)
     } else {
         audio.pause();
+        setUserDataProperty('isPlaying', false)
     }
 }
 
@@ -89,13 +92,17 @@ function forward() {
 
 if (navigator && 'mediaSession' in navigator) {
     navigator.mediaSession.setActionHandler('play', function () {
+        const { setUserDataProperty } = useUserData();
         const audio = getAudio();
         audio.play();
+        setUserDataProperty('isPlaying', true)
     });
 
     navigator.mediaSession.setActionHandler('pause', function () {
+        const { setUserDataProperty } = useUserData();
         const audio = getAudio();
         audio.pause();
+        setUserDataProperty('isPlaying', false)
     });
 
     navigator.mediaSession.setActionHandler('previoustrack', function () {
@@ -130,9 +137,11 @@ export default {
             this.totalDuration = audio.duration;
         },
         seek() {
+            const { setUserDataProperty } = useUserData();
             const audio = getAudio();
             audio.currentTime = this.currentTime;
             audio.play();
+            setUserDataProperty('isPlaying', true)
         },
         togglePlaying,
         backward,
@@ -143,6 +152,13 @@ export default {
             this.volume = volume.value;
             audio.volume = volume.value / 100;
         }
+    },
+    beforeMount() {
+        const { userData } = useUserData();
+
+        const audio = getAudio();
+        audio.volume = this.volume / 100;
+        if (userData.isPlaying) audio.play();
     }
 };
 </script>
@@ -208,11 +224,11 @@ export default {
     margin-bottom: 4px;
 }
 
-.time-controls>p {
+.seekbar-container>p {
     margin-bottom: 12px !important;
 }
 
-.time-controls>input {
+.seekbar-container>input {
     width: 100%;
     margin: 0;
     margin-bottom: 6px;
@@ -221,6 +237,7 @@ export default {
 .seekbar {
     appearance: none;
     height: 4px;
+    padding: 0;
     border-radius: 2px;
     background-color: #666a80;
 }
@@ -235,11 +252,11 @@ export default {
     max-height: 20px;
 }
 
-.playback-controls>img {
-    filter: invert(100%);
+.playback-controls>svg {
     height: 20px;
+    width: 20px;
 
-    margin: 0 8px;
+    margin: 0 4px;
     cursor: pointer;
 }
 </style>

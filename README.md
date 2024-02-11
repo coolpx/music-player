@@ -6,16 +6,20 @@ Visit [https://music.coolpixels.net](music.coolpixels.net) to use the hosted ver
 ```bash
 git clone https://github.com/coolpx/music-player.git
 ```
-2. Install dependencies
+2. Install pnpm
 ```bash
-npm install
+npm install -g pnpm
 ```
-3. Build the app
+3. Install dependencies
 ```bash
-npm run build
+pnpm install
 ```
-4. Start the server
+4. Build the app
 ```bash
-npm start
+pnpm run build
 ```
-5. Visit [http://localhost:3000](localhost:3000) to use the app.
+5. Start the server
+```bash
+node ./.output/server/index.mjs
+```
+6. Visit [http://localhost:3000](localhost:3000) to use the app.
